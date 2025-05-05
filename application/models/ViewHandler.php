@@ -6,7 +6,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class ViewHandler extends CI_Model
 {
-    // Array containing views mapped to keys
+
     protected $getView = [
         'login' => 'login.php',
         'insert' => 'register.php',
@@ -15,7 +15,6 @@ class ViewHandler extends CI_Model
         'reset_password' => 'reset-password.php'
     ];
 
-    // Array containing views mapped to keys
     protected $getRedirect = [
         'allData' => 'crud/allData',
         'login' => 'home/login'
@@ -38,7 +37,6 @@ class ViewHandler extends CI_Model
      */
     public function getRedirect(string $key): ?string
     {
-        // Check if the key exists in the redirect mapping
         return $this->getRedirect[$key] ?? null;
     }
 }
