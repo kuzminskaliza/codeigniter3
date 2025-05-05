@@ -1,0 +1,55 @@
+services:
+    apache:
+        build:
+            context: .
+            dockerfile: docker/php/php-apache.Dockerfile
+        container_name: apache-codeigniter3
+        volumes:
+            - ./docker/php/apache.conf:/etc/apache2/sites-available/000-default.conf
+            - ./:/var/www/codeigniter3-education
+            - ./docker/php/php.ini:/usr/local/etc/php/php.ini:ro
+        ports:
+            - "8080:80"
+        depends_on:
+            - php-fpm
+
+    php-fpm:
+        build:
+            context: .
+            dockerfile: docker/php/php-fpm.Dockerfile
+        container_name: php-fpm-codeigniter3
+        volumes:
+            - ./:/var/www/codeigniter3-education
+            - ./docker/php/php.ini:/usr/local/etc/php/php.ini:ro
+            - ./docker/php/hosts:/etc/hosts
+        depends_on:
+            - mysql
+
+    php-cli:
+        build:
+            context: .
+            dockerfile: docker/php/php-cli.Dockerfile
+        container_name: php-cli-codeigniter3
+        volumes:
+            - ~/.ssh:/home/www-data/.ssh
+            - ~/.bash_history:/home/www-data/.bash_history
+            - ./:/var/www/codeigniter3-education
+            - ./docker/php/php.ini:/usr/local/etc/php/php.ini:ro
+        tty: true
+        depends_on:
+            - mysql
+
+    mysql:
+        image: mysql:5.7
+        container_name: mysql-codeigniter3
+        environment:
+            MYSQL_ROOT_PASSWORD: rootpassword
+            MYSQL_DATABASE: codeigniter3-education
+            MYSQL_USER: 'admin'
+            MYSQL_PASSWORD: admin
+        ports:
+            - '3306:3306'
+        volumes:
+            - db-data:/var/lib/mysql
+volumes:
+    db-data:
