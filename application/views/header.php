@@ -14,7 +14,7 @@ $vendor_url = config_item('vendor_url');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminDesk </title>
+    <title>AdminDesk</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"

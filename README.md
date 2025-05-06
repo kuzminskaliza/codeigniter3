@@ -3,7 +3,7 @@
 - Проєкт має зручну структуру MVC, підтримку сесій та валідацію.
 
 ## Офіційне завантаження та документація
-- Головна сторінка: https://codeigniter.com/userguide3/installation/downloads.html
+- Головна сторінка: https://codeigniter.com/userguide3/general/welcome.html
 
 ## Що реалізовано
 
@@ -17,11 +17,12 @@
 
 ### Технології
 
-- PHP (7.4)
+- PHP 7.3
 - CodeIgniter 3
-- MySQL
+- MySQL 5.7
 - Bootstrap / AdminLTE
 - Apache Server
+- Xdebug 2.9.6
 
 ### Структура проєкту
 
@@ -33,30 +34,25 @@
 
 ### Як розгорнути проєкт
 
-1. **Клонувати репозиторій**:
-   ```sh
-   git clone https://github.com/kuzminskaliza/codeigniter3-education
-   ```
-   
-2.  **Підняти контейнери**:
-   ```sh
-   make build
-   ```
-
-3. **Налаштувати підключення до Бази даних**:
-   - Зайти в контейнер cli 
-   ```sh
-   make cli
-   ```
-   
-4. **Перевірити підключення до бази даних**: 
+1. **Перевірити підключення до бази даних**:
    - /application/config/config.php
-
-5. **Виконати міграції**:
+   - 
+2. **Запустити проєкт однією командою**:
    ```sh
-   php index.php migrate/up
+   make init
    ```
+#### Ця команда:
+- Клонує репозиторій
+- Піднімає контейнери з нуля
+- Встановлює залежності через Composer
+- Накочує міграції
 
-6. **Відкрити сторінку**:
+3. **Відкрити хости**
+   ```sh
+   sudo pluma /etc/hosts
+   ```
+   - Вказати ось це: 127.0.0.1 codeigniter3.local
+
+4. **Відкрити сторінку**:
    - http://codeigniter3.local:8080/index.php
 
