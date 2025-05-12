@@ -148,4 +148,17 @@ class CrudService
         redirect($this->CS->viewHandler->getRedirect('login'));
     }
 
+    public function getUserAjax()
+    {
+        $id = $this->CS->input->post('id');
+
+        if (!empty($id)) {
+            $user = $this->CS->crudRepository->getData($id);
+            header('Content-Type: application/json');
+            echo json_encode($user);
+        } else {
+            show_error('Missing user ID', 400);
+        }
+    }
+
 }
