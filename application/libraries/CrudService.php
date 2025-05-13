@@ -159,11 +159,32 @@ class CrudService
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'language' => $user->language,
-                'qualification' => explode(',', $user->qualification),
+                'qualification' => explode(' , ', $user->qualification),
+                'updated_on' => $user->updated_on,
             ]);
         } else {
             show_error('Missing user ID', 400);
         }
+    }
+
+    public function toggleStatus()
+    {
+        $id = $this->CS->input->post('id');
+        if (!empty($id)) {
+            $user = $this->CS->crudRepository->getData($id);
+            if ($user) {
+                $newStatus = $user->status == 1 ? 0 : 1;
+
+                $this->CS->crudRepository->updateUserStatus($id, $newStatus);
+
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => true,
+                    'status' => $newStatus,
+                ]);
+            }
+        }
+
     }
 
 }
