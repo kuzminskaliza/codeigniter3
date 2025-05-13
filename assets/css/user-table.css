@@ -1,0 +1,23 @@
+td[rowspan="2"] {
+    vertical-align: middle !important;
+}
+
+tr, td {
+    cursor: pointer;
+}
+
+.button-width {
+    width: 130px;
+}
+
+.name-width {
+    width: 100px;
+}
+
+.id-width {
+    width: 50px;
+}
+
+.row-name-width {
+    width: 200px;
+}

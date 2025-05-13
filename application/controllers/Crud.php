@@ -46,4 +46,9 @@ class Crud extends CI_Controller
 	{
 		$this->crudservice->passwordVerify();
 	}
+
+    public function getUserAjax()
+    {
+        $this->crudservice->getUserAjax();
+    }
 }
