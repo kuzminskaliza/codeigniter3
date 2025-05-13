@@ -3,22 +3,14 @@ $(document).ready(function () {
 
     let userTable = {
 
-        DETAIL_ROW_CLASS: 'user-details',
-
-        rowSelector: 'tr.user-row',
+        detailRowClass: '#user-table user-details',
+        rowSelector: '#user-table tr.user-row',
         rowspanSelector: 'td:first-child',
         multiRowspanSelector: 'td:nth-last-child(-n+3)',
 
         init: function () {
             console.log('Ініціалізація userTable...');
             this.initRowClickHandler();
-            this.initPreventPropagationForButtons();
-        },
-
-        initPreventPropagationForButtons: function () {
-            $(document).on('click', 'a, button', function (e) {
-                e.stopPropagation();
-            });
         },
 
         initRowClickHandler: function () {
@@ -32,7 +24,7 @@ $(document).ready(function () {
                 let $row = $(this);
                 let userId = $row.data('id');
 
-                if ($row.next().hasClass($this.DETAIL_ROW_CLASS)) {
+                if ($row.next().hasClass($this.detailRowClass)) {
                     $row.next().fadeOut(200, function () {
                         $(this).remove();
                         $row.find($this.rowspanSelector).removeAttr('rowspan');
@@ -42,19 +34,20 @@ $(document).ready(function () {
                 }
 
                 $.ajax({
-                    url: '/user/get-user',
+                    url: '/crud/getUserAjax',
                     method: 'POST',
                     data: { id: userId },
                     dataType: 'json',
                     success: function (user) {
                         let detailRow = `
-                            <tr class="${$this.DETAIL_ROW_CLASS}">
+                            <tr class="${$this.detailRowClass}">
                                 <td>${user.email}</td>
                                 <td><strong>Phone:</strong> ${user.phone}</td>
                                 <td><strong>Language:</strong> ${user.language}</td>
                                 <td><strong>Qualification:</strong> ${user.qualification}</td>
                             </tr>
                         `;
+                        console.log(user);
                         $row.find($this.rowspanSelector).attr('rowspan', 2);
                         $row.find($this.multiRowspanSelector).attr('rowspan', 2);
 

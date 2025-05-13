@@ -155,7 +155,12 @@ class CrudService
         if (!empty($id)) {
             $user = $this->CS->crudRepository->getData($id);
             header('Content-Type: application/json');
-            echo json_encode($user);
+            echo json_encode([
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'language' => $user->language,
+                'qualification' => explode(',', $user->qualification),
+            ]);
         } else {
             show_error('Missing user ID', 400);
         }

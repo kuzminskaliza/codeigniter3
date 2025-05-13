@@ -28,6 +28,8 @@ $vendor_url = config_item('vendor_url');
 
     </nav>
 
+    <script src="<?= $vendor_url; ?>plugins/jquery/jquery.min.js"></script>
+
 	<aside class="main-sidebar sidebar-dark-primary elevation-4">
 		<a href="<?= base_url('crud/allData') ?>" class="brand-link">
 			<i class="fas fa-user mr-2"></i>
@@ -44,7 +46,7 @@ $vendor_url = config_item('vendor_url');
 
     <!-- REQUIRED SCRIPTS -->
     <!-- jQuery -->
-    <script src="<?= $vendor_url; ?>plugins/jquery/jquery.min.js"></script>
+
     <!-- Bootstrap -->
     <script src="<?= $vendor_url; ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Select2 -->
