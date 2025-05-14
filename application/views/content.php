@@ -44,9 +44,6 @@ $vendor_url = config_item('vendor_url');
         <!-- /.content -->
     </div>
 
-    <!-- REQUIRED SCRIPTS -->
-    <!-- jQuery -->
-
     <!-- Bootstrap -->
     <script src="<?= $vendor_url; ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Select2 -->

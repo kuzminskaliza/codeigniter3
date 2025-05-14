@@ -4,6 +4,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class CrudService
 {
+    const USER_STATUS_ACTIVE = 1;
+    const USER_STATUS_INACTIVE = 0;
     /** @var CodeIgniterInstance|CI_Controller $CS */
     protected $CS;
 
@@ -38,30 +40,31 @@ class CrudService
             $this->CS->crudRepository->addData($post);
         } else {
             log_message('error', 'Form validation failed.');
-            $this->CS->load->view( $this->CS->viewHandler->getView('insert'));
+            $this->CS->load->view($this->CS->viewHandler->getView('insert'));
         }
 
     }
 
-	public function allData()
-	{
-		if ($this->CS->session->userdata('logged_in')) {
-			$data['arr'] = $this->CS->crudRepository->allData();
+    public function allData()
+    {
+        if ($this->CS->session->userdata('logged_in')) {
+            $data['arr'] = $this->CS->crudRepository->allData();
 
-			$content = $this->CS->load->view($this->CS->viewHandler->getView('allData'), $data, true);
+            $content = $this->CS->load->view($this->CS->viewHandler->getView('allData'), $data, true);
 
-			$this->CS->load->view('header.php');
-			$this->CS->load->view('content.php', ['content' => $content]);
-			$this->CS->load->view('footer.php');
-		} else {
-			redirect($this->CS->viewHandler->getRedirect('login'));
-		}
-	}
-		public function getData($id)
+            $this->CS->load->view('header.php');
+            $this->CS->load->view('content.php', ['content' => $content]);
+            $this->CS->load->view('footer.php');
+        } else {
+            redirect($this->CS->viewHandler->getRedirect('login'));
+        }
+    }
+
+    public function getData($id)
     {
         if ($id != '') {
             $data['arr'] = $this->CS->crudRepository->getData($id);
-			$content = $this->CS->load->view($this->CS->viewHandler->getView('update'), $data, true);
+            $content = $this->CS->load->view($this->CS->viewHandler->getView('update'), $data, true);
 
             $this->CS->load->view('header.php');
             $this->CS->load->view('content.php', ['content' => $content]);
@@ -81,7 +84,7 @@ class CrudService
             $id = $this->CS->session->userdata('user_id');
             $this->CS->session->unset_userdata('user_id');
             $data['arr'] = $this->CS->crudRepository->getData($id);
-            $this->CS->load->view( $this->CS->viewHandler->getView('update'), $data);
+            $this->CS->load->view($this->CS->viewHandler->getView('update'), $data);
         }
     }
 
@@ -90,7 +93,7 @@ class CrudService
         if ($this->CS->session->userdata('login_id') == $id) {
             log_message('error', 'Attempted to delete own record.');
             $this->CS->session->set_flashdata('deleteMsg', 'You cannot delete your own record.');
-            redirect( $this->CS->viewHandler->getRedirect('allData'));
+            redirect($this->CS->viewHandler->getRedirect('allData'));
         } else {
             $this->CS->crudRepository->deleteData($id);
         }
@@ -100,12 +103,12 @@ class CrudService
     {
         if ($this->CS->session->userdata('logged_in')) {
             $data['arr'] = $this->CS->crudRepository->getData($id);
-			$content = $this->CS->load->view($this->CS->viewHandler->getView('reset_password'), $data, true);
+            $content = $this->CS->load->view($this->CS->viewHandler->getView('reset_password'), $data, true);
             $this->CS->load->view('header.php');
             $this->CS->load->view('content.php', ['content' => $content]);
             $this->CS->load->view('footer.php');
         } else {
-            redirect( $this->CS->viewHandler->getRedirect('login'));
+            redirect($this->CS->viewHandler->getRedirect('login'));
         }
     }
 
@@ -159,11 +162,46 @@ class CrudService
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'language' => $user->language,
-                'qualification' => explode(',', $user->qualification),
+                'qualification' => explode(' , ', $user->qualification),
+                'updated_on' => $user->updated_on,
             ]);
         } else {
             show_error('Missing user ID', 400);
         }
     }
 
+    public function toggleStatus()
+    {
+        $id = $this->CS->input->post('id');
+        try {
+            if (empty($id)) {
+                throw new Exception('Missing user ID');
+            }
+            $user = $this->CS->crudRepository->getData($id);
+
+            if (!$user) {
+                throw new Exception('User not found');
+            }
+
+            $newStatus = $user->status == self::USER_STATUS_ACTIVE ? self::USER_STATUS_INACTIVE : self::USER_STATUS_ACTIVE;
+
+            if ($this->CS->crudRepository->updateUserStatus($id, $newStatus)) {
+                $result = [
+                    'success' => true,
+                    'status' => $newStatus,
+                ];
+            } else {
+                throw new Exception('Failed to update user status');
+            }
+        } catch (Exception $e) {
+            $result = [
+                'success' => false,
+                'error' => $e->getMessage(),
+            ];
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($result);
+
+    }
 }

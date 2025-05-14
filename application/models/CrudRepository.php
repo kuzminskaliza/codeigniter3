@@ -99,4 +99,13 @@ class CrudRepository extends CI_Model
     {
         return $this->databaseModel->getUserByUsername($username);
     }
+
+    public function updateUserStatus($id, $status)
+    {
+        return $this->databaseModel->updateData([
+            'id' => $id,
+            'status' => $status,
+            'updated_on' => date('Y-m-d H:i:s'),
+        ]);
+    }
 }

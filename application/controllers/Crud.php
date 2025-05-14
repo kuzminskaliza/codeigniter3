@@ -51,4 +51,9 @@ class Crud extends CI_Controller
     {
         $this->crudservice->getUserAjax();
     }
+
+    public function toggleStatus()
+    {
+        $this->crudservice->toggleStatus();
+    }
 }

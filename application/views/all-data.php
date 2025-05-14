@@ -27,9 +27,9 @@
             <?php if (!empty($arr)) {
                 foreach ($arr as $key => $value) {
                     if ($value->status == '1') {
-                        $status = '<span class="badge bg-success">Active</<span>';
+                        $status = '<span class="badge bg-success">Active</span>';
                     } else {
-                        $status = '<span class="badge bg-danger">Deactive</<span>';
+                        $status = '<span class="badge bg-danger">Deactive</span>';
                     }
 
                     ?>
@@ -38,7 +38,7 @@
                         <td class="row-name-width"><?= $value->name ?></td>
                         <td><?= $value->username ?></td>
                         <td><?= $value->gender ?></td>
-                        <td><?= $status ?></td>
+                        <td class="update-status"><?= $status ?></td>
                         <td style="white-space: nowrap;"><?= $value->added_on ?></td>
                         <td class="button-width">
                             <a href="resetPassword/<?= $value->id ?>"
